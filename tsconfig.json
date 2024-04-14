@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir" : "dist",
+        "target": "ES2022",
+        "noEmitOnError": true, // Ne génère pas de fichier contenant des erreurs
+        "strict": true,
+    },
+    
+    "include": [
+        "src/**/*.ts" // Inclut tous les fichiers .ts dans le répertoire src et ses sous-répertoires
+    ]
+}
