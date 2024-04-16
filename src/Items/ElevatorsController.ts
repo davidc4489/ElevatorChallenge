@@ -42,9 +42,9 @@ export default class ElevatorsController {
 
     public elevatorIsAvailable(): void {
         if (this.waitingFloors.length > 0) {
-            const nextFloor = this.waitingFloors.shift(); // Récupérer le prochain étage en attente dans la file d'attente
+            const nextFloor = this.waitingFloors.shift();
             if (nextFloor !== undefined){
-                this.assignFloorToElevator(nextFloor); // Attribuer cet étage à un ascenseur disponible
+                this.assignFloorToElevator(nextFloor);
             }
         }
     }

@@ -30,7 +30,7 @@ export default class Elevator {
         const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
         if (elevator) {
             const duration = Math.abs(350 * (floorNumber - Math.round(currentPosition / 110)));
-            const interval = 10; // Interval de mise à jour de la position de l'ascenseur (en millisecondes)
+            const interval = 10;
             const steps = Math.ceil(duration / interval);
             const distance = newPosition - currentPosition;
             const stepDistance = distance / steps;

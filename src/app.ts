@@ -19,9 +19,7 @@ if (buildingsContainer) {
                 if (floorNumberAttribute !== null) {
                     const floorNumber = parseInt(floorNumberAttribute);
                     if (!isNaN(floorNumber)) {
-                        console.log(`Clicked on floor ${floorNumber} in building ${i + 1}`);
                         elevatorApp.assignFloorToElevator(i, floorNumber);
-                        console.log("index: ", i)
                     }
                 }
             }

@@ -45,7 +45,7 @@ export default class Floor {
         this.timeToWait = secondsToWait;
         console.log(secondsToWait);
         if (this.timer) {
-            clearInterval(this.timer); // Arrêtez le précédent compteur s'il existe
+            clearInterval(this.timer); // Stop the preview timer
         }
         if (this.timeToWait > 0) {
             this.timer = setInterval(() => {
