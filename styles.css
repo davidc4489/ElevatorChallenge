@@ -3,6 +3,15 @@
   position: relative;
 }
 
+.buildings {
+  display: flex;
+}
+
+.building {
+  display: inline-block;
+  /* margin-right: 420px; */
+}
+
 .floors-container {
   border-left: solid black 5px;
   border-right: solid black 5px;

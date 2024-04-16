@@ -38,10 +38,10 @@ export default class Elevator {
                 else {
                     elevator.style.bottom = `${newPosition}px`;
                     audio.play();
-                    this.building.elevatorArrival(floorNumber);
+                    this.building.getElevatorsController().elevatorArrival(floorNumber);
                     setTimeout(() => {
                         this.isMoving = false;
-                        this.building.elevatorIsAvailable();
+                        this.building.getElevatorsController().elevatorIsAvailable();
                     }, 2000);
                 }
             };
