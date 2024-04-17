@@ -1,3 +1,4 @@
+import { floorHeightConfig, secondsPerFloor } from '../config.js';
 export default class ElevatorsController {
     buildingFloors;
     buildingElevators;
@@ -9,33 +10,38 @@ export default class ElevatorsController {
     assignFloorToElevator(floorNumber) {
         if (this.buildingElevators.length > 0) {
             this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].isWaiting = true;
-            this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].updateRender();
+            this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].updateRender(); // The floor button turns green
             let closestElevatorIndex = 0;
-            let closestDistance = Infinity;
+            let minimalWaitingTime = Infinity;
             for (let i = 0; i < this.buildingElevators.length; i++) {
                 const elevator = this.buildingElevators[i];
                 const elevatorPosition = elevator.getCurrentPosition();
-                const distance = Math.abs(110 * floorNumber - elevatorPosition);
-                if (!elevator.isMoving && distance < closestDistance) {
+                let movingTime;
+                let totalWaitingTime;
+                if (elevator.movingTime > 0) {
+                    movingTime = elevator.movingTime + (Math.abs(floorNumber - elevator.floorDestinationNumber) * secondsPerFloor);
+                    totalWaitingTime = movingTime + elevator.arrivalWaiting;
+                }
+                else {
+                    movingTime = Math.abs(floorNumber - (elevatorPosition / floorHeightConfig)) * secondsPerFloor;
+                    totalWaitingTime = movingTime + elevator.arrivalWaiting;
+                }
+                if (totalWaitingTime < minimalWaitingTime) {
                     closestElevatorIndex = i;
-                    closestDistance = distance;
+                    minimalWaitingTime = totalWaitingTime;
                 }
             }
-            if (closestDistance !== Infinity) {
-                this.buildingElevators[closestElevatorIndex].goToFloor(floorNumber);
-                const secondsToWait = Math.abs(floorNumber - ((this.buildingElevators[closestElevatorIndex].getCurrentPosition()) / 110)) / 2;
-                this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setTime(secondsToWait);
-            }
-            else {
-                this.waitingFloors.push(floorNumber);
+            if (minimalWaitingTime !== Infinity) {
+                this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setTime(minimalWaitingTime);
+                this.buildingElevators[closestElevatorIndex].goToFloor(floorNumber, minimalWaitingTime);
             }
         }
     }
     elevatorIsAvailable() {
         if (this.waitingFloors.length > 0) {
-            const nextFloor = this.waitingFloors.shift(); // Récupérer le prochain étage en attente dans la file d'attente
+            const nextFloor = this.waitingFloors.shift();
             if (nextFloor !== undefined) {
-                this.assignFloorToElevator(nextFloor); // Attribuer cet étage à un ascenseur disponible
+                this.assignFloorToElevator(nextFloor);
             }
         }
     }

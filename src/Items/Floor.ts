@@ -43,7 +43,6 @@ export default class Floor {
 
     public setTime(secondsToWait: number) : void {
         this.timeToWait = secondsToWait;
-        console.log(secondsToWait);
         if (this.timer) {
             clearInterval(this.timer); // Stop the preview timer
         }
@@ -53,7 +52,6 @@ export default class Floor {
                     this.timeToWait -= 0.5;
                     this.updateRender();
                 }
-                console.log(this.timeToWait)
                 if (this.timeToWait <= 0) {
                     clearInterval(this.timer!);
                     this.timer = null;
