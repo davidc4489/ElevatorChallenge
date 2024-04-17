@@ -5,7 +5,8 @@ import { floorHeightConfig, secondsPerFloor} from '../config.js';
 export default class ElevatorsController {
     private buildingFloors: Floor[];
     private buildingElevators: Elevator[];
-    private waitingFloors: number[] = [];
+    private waitingFloorsList: number[] = [];
+    private waitingFloors: { floorNumber: number, elevatorNumber: number, waitingTime: number }[] = [];
 
     constructor(floors: Floor[], elevators: Elevator[]) {
         this.buildingFloors = floors;
@@ -46,17 +47,34 @@ export default class ElevatorsController {
             if (minimalWaitingTime !== Infinity) {
 
                 this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setTime(minimalWaitingTime);
-                this.buildingElevators[closestElevatorIndex].goToFloor(floorNumber, minimalWaitingTime);
+                if (this.buildingElevators[closestElevatorIndex].isAvailable === true) {
+                    this.buildingElevators[closestElevatorIndex].goToFloor(floorNumber, minimalWaitingTime);
+                }
+                else {
+                    this.waitingFloorsList.push(floorNumber);
+                    this.waitingFloors.push({ floorNumber: floorNumber, elevatorNumber: closestElevatorIndex, waitingTime: minimalWaitingTime });
+                }
             }
 
         }
     }
 
-    public elevatorIsAvailable(): void {
-        if (this.waitingFloors.length > 0) {
-            const nextFloor = this.waitingFloors.shift();
-            if (nextFloor !== undefined){
-                this.assignFloorToElevator(nextFloor);
+
+    public elevatorIsAvailable(elevatorNumber: number): void {
+        if (this.waitingFloorsList.length > 0) {
+            for (let i = 0; i < this.waitingFloorsList.length; i++) {
+                const nextFloor = this.waitingFloorsList[i];
+    
+                const indexInWaitingFloors = this.waitingFloors.findIndex(floor => floor.floorNumber === nextFloor && floor.elevatorNumber === elevatorNumber);
+    
+                if (indexInWaitingFloors !== -1) {
+                    const { floorNumber, waitingTime } = this.waitingFloors[indexInWaitingFloors];
+    
+                    this.waitingFloors.splice(indexInWaitingFloors, 1);
+                    this.waitingFloorsList.splice(i, 1);
+    
+                    this.buildingElevators[elevatorNumber].goToFloor(floorNumber, waitingTime);
+                }
             }
         }
     }

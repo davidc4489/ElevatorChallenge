@@ -6,6 +6,7 @@ export default class Elevator {
     arrivalWaiting = 0;
     movingTime = 0;
     floorDestinationNumber = null;
+    isAvailable = true;
     constructor(elevatorNumber) {
         this.elevatorNumber = elevatorNumber;
     }
@@ -24,6 +25,7 @@ export default class Elevator {
             this.arrivalWaiting = 2;
             this.movingTime = movingTime;
             this.floorDestinationNumber = floorNumber;
+            this.isAvailable = false;
             const floorHeight = floorHeightConfig;
             const currentPosition = this.getCurrentPosition();
             const newPosition = Math.round(floorNumber * floorHeight);
@@ -67,7 +69,8 @@ export default class Elevator {
                         this.isMoving = false;
                         this.movingTime = 0;
                         this.floorDestinationNumber = null;
-                        this.building.getElevatorsController().elevatorIsAvailable();
+                        this.isAvailable = true;
+                        this.building.getElevatorsController().elevatorIsAvailable(this.elevatorNumber);
                     }
                 };
                 animate();
