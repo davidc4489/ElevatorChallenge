@@ -1,10 +1,8 @@
 import Floor from './Floor.js';
 import Elevator from './Elevator.js';
-// import ElevatorApp from './ElevatorApp.js';
 import ElevatorsController from './ElevatorsController.js';
 
 export default class Building {
-    // private elevatorApp!: ElevatorApp;
     private floors: Floor[];
     private elevators: Elevator[];
     private elevatorsController!: ElevatorsController ;
@@ -15,10 +13,6 @@ export default class Building {
         this.elevators = [];
         this.buildingNumber = buildingIndex;
     }
-
-    // public setElevatorApp(elevatorApp: ElevatorApp): void {
-    //     this.elevatorApp = elevatorApp;
-    // }
 
     public setElevatorsController(elevatorsController: ElevatorsController): void {
         // Gives a reference to the building on the elevatorsController of this building

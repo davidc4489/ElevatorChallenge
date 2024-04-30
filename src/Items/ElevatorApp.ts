@@ -8,7 +8,6 @@ export default class ElevatorApp {
     }
 
     addBuilding(building : Building) {
-        // building.setElevatorApp(this);
         this.buildings.push(building);
     }
 

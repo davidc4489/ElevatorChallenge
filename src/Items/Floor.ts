@@ -38,16 +38,20 @@ export default class Floor {
     }
 
     public updateRender(): void {
-        // const element = document.querySelector(`.floor-button[floorNumberData="${this.floorNumber}"]`) as HTMLElement | null;
+        // Keep the calling floor
         const element = document.querySelector(`.floor-button[floorNumberData="${this.floorNumber}"][buildingIndexData="${this.buildingIndex}"]`) as HTMLElement | null;
+        
         if (element) {
+            // Display the button in green if the floor is waiting 
             const buttonClass = this.isWaiting ? 'metal linear floor-button green' : 'metal linear floor-button';
             element.className = buttonClass;
+            // Show wait time if floor is waiting
             const timeDisplay = this.timeToWait > 0 ? `<span class="time-to-wait">${this.timeToWait}</span>` : '';
             element.innerHTML = `${this.floorNumber} ${timeDisplay}`;
         }
     }
 
+    // Function called when an elevator is assigned to the floor and which counts down the waiting time until the elevator arrives
     public setTime(secondsToWait: number) : void {
         this.timeToWait = secondsToWait;
         if (this.timer) {

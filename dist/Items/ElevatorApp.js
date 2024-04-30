@@ -4,7 +4,6 @@ export default class ElevatorApp {
         this.buildings = [];
     }
     addBuilding(building) {
-        // building.setElevatorApp(this);
         this.buildings.push(building);
     }
     // Function to activate the elevator controller from a building received as an argument to a floor received as an argument

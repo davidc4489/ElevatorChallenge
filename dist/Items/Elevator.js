@@ -1,4 +1,4 @@
-import { floorHeightConfig } from '../config.js';
+import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong } from '../config.js';
 export default class Elevator {
     building;
     elevatorNumber;
@@ -14,6 +14,7 @@ export default class Elevator {
         this.building = building;
     }
     render() {
+        // The elevator contains information about its building
         return `<img id="elevator${this.elevatorNumber}" src="../assets/elv.png" class="elevator" style="left: ${this.elevatorNumber * 90}px;" buildingNumberData="${this.building.buildingNumber}">`;
     }
     async goToFloor(buildingNumber, floorNumber, movingTime) {
@@ -22,41 +23,47 @@ export default class Elevator {
             await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500 ms before checking again
         }
         const moveElevator = () => {
+            // Update the elevator data
             this.isMoving = true;
-            this.arrivalWaiting = 2;
+            this.arrivalWaiting = arrivalWaitingTimeInSeconds;
             this.movingTime = movingTime;
             this.floorDestinationNumber = floorNumber;
             this.isAvailable = false;
             const floorHeight = floorHeightConfig;
             const currentPosition = this.getCurrentPosition();
             const newPosition = Math.round(floorNumber * floorHeight);
-            // const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+            // Keep the elevator to move
             const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`);
             if (elevator) {
+                // Calculate the duration of the animation : the animation time for a floor multiplied by the number of floors
                 const duration = Math.abs(330 * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
+                //  Duration in milliseconds of the interval between each rendering of the elevator so that the animation is smooth
                 const interval = 10;
                 const steps = Math.ceil(duration / interval);
                 const distance = newPosition - currentPosition;
-                const stepDistance = distance / steps;
+                const stepDistance = distance / steps; // Calculation of the distance to move the elevator on each step
                 let currentStep = 0;
-                const audio = new Audio('../../assets/ding.mp3');
+                const audio = arrivalSong;
                 let previousPosition = currentPosition;
                 const animate = () => {
+                    // If the number of movements necessary for the elevator to reach the calling floor has not yet been reached
                     if (currentStep < steps) {
                         const nextPosition = currentPosition + stepDistance * currentStep;
                         elevator.style.bottom = `${nextPosition}px`;
                         currentStep++;
                         if (Math.abs(nextPosition - previousPosition) >= floorHeightConfig) {
-                            // Décrémente this.movingTime de 0.5 à chaque tranche de 110 pixels parcourue
+                            // Decrements this.movingTime by 0.5 for each 110 pixels moved
                             this.movingTime -= 0.5;
-                            previousPosition = nextPosition; // Met à jour la position précédente
+                            previousPosition = nextPosition; // Update the previous position
                             // console.log("MovingTime : " + this.movingTime)
                         }
+                        // Activate the animation after the defined time interval between each animation
                         setTimeout(animate, interval);
                     }
                     else {
                         elevator.style.bottom = `${newPosition}px`;
                         audio.play();
+                        // Update the elevator state
                         this.building.getElevatorsController().elevatorArrival(floorNumber);
                         const intervalId = setInterval(() => {
                             if (this.arrivalWaiting > 0) {
@@ -65,9 +72,10 @@ export default class Elevator {
                             }
                             else {
                                 // console.log("ArrivalWaiting : ", this.arrivalWaiting);
-                                clearInterval(intervalId); // Arrêter la mise à jour lorsque les 2 secondes se sont écoulées
+                                clearInterval(intervalId); // Stop updating when arrivalWaitingTimeInSeconds have passed
                             }
                         }, 500);
+                        // Update the elevator data
                         this.isMoving = false;
                         this.movingTime = 0;
                         this.floorDestinationNumber = null;
@@ -78,9 +86,9 @@ export default class Elevator {
                 animate();
             }
         };
-        // Function to Wait until arrivalWaiting is zero before moving the elevator
+        // Function to wait until arrivalWaiting is zero before moving the elevator
         const waitUntilArrivalWaitingZero = () => {
-            if (this.arrivalWaiting === 0) {
+            if (this.arrivalWaiting <= 0) {
                 moveElevator();
             }
             else {
@@ -90,7 +98,7 @@ export default class Elevator {
         waitUntilArrivalWaitingZero();
     }
     getCurrentPosition() {
-        // const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+        // Keep the elevator to move
         const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`);
         if (elevator) {
             const currentPositionString = window.getComputedStyle(elevator).getPropertyValue('bottom');

@@ -1,5 +1,4 @@
 export default class Building {
-    // private elevatorApp!: ElevatorApp;
     floors;
     elevators;
     elevatorsController;
@@ -9,9 +8,6 @@ export default class Building {
         this.elevators = [];
         this.buildingNumber = buildingIndex;
     }
-    // public setElevatorApp(elevatorApp: ElevatorApp): void {
-    //     this.elevatorApp = elevatorApp;
-    // }
     setElevatorsController(elevatorsController) {
         // Gives a reference to the building on the elevatorsController of this building
         elevatorsController.setBuilding(this);
