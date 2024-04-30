@@ -19,12 +19,14 @@ export default class Elevator {
     }
 
     public render(): string {
-        return `<img id="elevator${this.elevatorNumber}" src="../assets/elv.png" class="elevator" style="left: ${this.elevatorNumber * 90}px;">`;
+        return `<img id="elevator${this.elevatorNumber}" src="../assets/elv.png" class="elevator" style="left: ${this.elevatorNumber * 90}px;" buildingNumberData="${this.building.buildingNumber}">`;
     }
 
-    public async goToFloor(floorNumber: number, movingTime: number): Promise<void> {
+    public async goToFloor(buildingNumber: number, floorNumber: number, movingTime: number): Promise<void> {
+
+        // Check if the elevator is moving
         while (this.isMoving) {
-            await new Promise(resolve => setTimeout(resolve, 500)); // Attendre 500 ms avant de vérifier à nouveau
+            await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500 ms before checking again
         }
     
         const moveElevator = () => {
@@ -37,7 +39,8 @@ export default class Elevator {
             const floorHeight = floorHeightConfig; 
             const currentPosition = this.getCurrentPosition();
             const newPosition = Math.round(floorNumber * floorHeight);
-            const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+            // const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+            const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`) as HTMLElement | null;
 
             if (elevator) {
                 const duration = Math.abs(330 * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
@@ -60,7 +63,7 @@ export default class Elevator {
                             // Décrémente this.movingTime de 0.5 à chaque tranche de 110 pixels parcourue
                             this.movingTime -= 0.5;
                             previousPosition = nextPosition; // Met à jour la position précédente
-                            console.log("MovingTime : " + this.movingTime)
+                            // console.log("MovingTime : " + this.movingTime)
                         }
 
                         setTimeout(animate, interval);
@@ -71,9 +74,9 @@ export default class Elevator {
                         const intervalId = setInterval(() => { // Démarrer le décompte seulement après l'arrivée
                             if (this.arrivalWaiting > 0) {
                                 this.arrivalWaiting -= 0.5;
-                                console.log("ArrivalWaiting : ", this.arrivalWaiting);
+                                // console.log("ArrivalWaiting : ", this.arrivalWaiting);
                             } else {
-                                console.log("ArrivalWaiting : ", this.arrivalWaiting);
+                                // console.log("ArrivalWaiting : ", this.arrivalWaiting);
                                 clearInterval(intervalId); // Arrêter la mise à jour lorsque les 2 secondes se sont écoulées
                             }
                         }, 500);
@@ -90,7 +93,7 @@ export default class Elevator {
             }
         };
     
-        // Attendre que arrivalWaiting soit à zéro avant de déplacer l'ascenseur
+        // Function to Wait until arrivalWaiting is zero before moving the elevator
         const waitUntilArrivalWaitingZero = () => {
             if (this.arrivalWaiting === 0) {
                 moveElevator();
@@ -103,7 +106,8 @@ export default class Elevator {
     }
 
     public getCurrentPosition(): number {
-        const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+        // const elevator = document.getElementById(`elevator${this.elevatorNumber}`);
+        const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`) as HTMLElement | null;
         if (elevator) {
             const currentPositionString = window.getComputedStyle(elevator).getPropertyValue('bottom');
             const currentPositionInt = parseInt(currentPositionString, 10);

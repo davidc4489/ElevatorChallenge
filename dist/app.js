@@ -12,10 +12,15 @@ if (buildingsContainer) {
             const target = event.target;
             if (target.classList.contains('floor-button')) {
                 const floorNumberAttribute = target.getAttribute('floorNumberData');
-                if (floorNumberAttribute !== null) {
+                // Get the floor number
+                const buildingIndexAttribute = parseInt(target.getAttribute('buildingIndexData'));
+                console.log("floorNumberAttribute :", floorNumberAttribute);
+                // Check the index of the building calling the elevator
+                if (floorNumberAttribute !== null && building.buildingNumber == buildingIndexAttribute) {
+                    console.log("buildingIndexData :", buildingIndexAttribute);
                     const floorNumber = parseInt(floorNumberAttribute);
                     if (!isNaN(floorNumber)) {
-                        elevatorApp.assignFloorToElevator(i, floorNumber);
+                        elevatorApp.assignFloorToElevator(buildingIndexAttribute, floorNumber);
                     }
                 }
             }

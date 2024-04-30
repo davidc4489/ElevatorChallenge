@@ -1,24 +1,28 @@
 import Floor from './Floor.js';
 import Elevator from './Elevator.js';
-import ElevatorApp from './ElevatorApp.js';
+// import ElevatorApp from './ElevatorApp.js';
 import ElevatorsController from './ElevatorsController.js';
 
 export default class Building {
-    private elevatorApp!: ElevatorApp;
+    // private elevatorApp!: ElevatorApp;
     private floors: Floor[];
     private elevators: Elevator[];
     private elevatorsController!: ElevatorsController ;
+    public buildingNumber: number
 
-    constructor() {
+    constructor(buildingIndex: number) {
         this.floors = [];
         this.elevators = [];
+        this.buildingNumber = buildingIndex;
     }
 
-    public setElevatorApp(elevatorApp: ElevatorApp): void {
-        this.elevatorApp = elevatorApp;
-    }
+    // public setElevatorApp(elevatorApp: ElevatorApp): void {
+    //     this.elevatorApp = elevatorApp;
+    // }
 
     public setElevatorsController(elevatorsController: ElevatorsController): void {
+        // Gives a reference to the building on the elevatorsController of this building
+        elevatorsController.setBuilding(this);
         this.elevatorsController = elevatorsController;
     }
 
@@ -27,6 +31,7 @@ export default class Building {
     }
 
     public addElevator(elevator: Elevator): void {
+        // Gives a reference to the building on each elevator of this building
         elevator.setBuilding(this);
         this.elevators.push(elevator);
     }
@@ -43,6 +48,7 @@ export default class Building {
         return this.elevatorsController;
     }
 
+    // Function to display the building
     public renderBuilding(numFloors: number): string {
         const marginRight = (numFloors * 75);
         let buildingHTML = `<div style="margin-right: ${marginRight}px; display: flex; position: relative;" class="building-container">`;

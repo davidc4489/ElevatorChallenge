@@ -1,4 +1,4 @@
-export const numBuildings = 1;
+export const numBuildings = 2;
 export const numFloors = 26;
 export const numElevators = 4;
 export const floorHeightConfig = 110;

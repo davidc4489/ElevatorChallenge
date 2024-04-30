@@ -14,19 +14,23 @@ export default class BuildingFactory  {
         this.elevatorsControllerFactory = new ElevatorsControllerFactory();
     }
 
-    public createBuilding(numFloors: number, numElevators: number): Building {
-        const building = new Building();
+    public createBuilding(numFloors: number, numElevators: number, buildingIndex: number): Building {
+        const building = new Building(buildingIndex);
+        building.buildingNumber = buildingIndex;
 
+        // Allocation to the building of its floors
         for (let i = numFloors - 1; i >= 0; i--) {
-            const floor = this.floorFactory.createFloor(i);
+            const floor = this.floorFactory.createFloor(i, buildingIndex);
             building.addFloor(floor);
         }
 
+        // Allocation to the building of its elevators
         for (let i = 0; i < numElevators; i++) {
             const elevator = this.elevatorFactory.createElevator(i);
             building.addElevator(elevator);
         }
 
+        // Allocation to the building of its elevatorsController
         building.setElevatorsController(this.elevatorsControllerFactory.createElevatorsController(building.getFloors(), building.getElevators()));
 
         return building;

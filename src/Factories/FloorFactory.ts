@@ -1,7 +1,8 @@
 import Floor from '../Items/Floor.js';
+import Building from '../Items/Building.js';
 
 export default class FloorFactory {
-    public createFloor(floorNumber: number): Floor {
-        return new Floor(floorNumber);
+    public createFloor(floorNumber: number, buildingIndex: number): Floor {
+        return new Floor(floorNumber, buildingIndex);
     }
 }
