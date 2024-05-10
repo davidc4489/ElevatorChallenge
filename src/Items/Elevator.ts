@@ -1,5 +1,5 @@
 import Building from "./Building";
-import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong} from '../config.js';
+import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong} from '../Configuration/staticConfiguratio.js';
 
 export default class Elevator {
     private building!: Building;

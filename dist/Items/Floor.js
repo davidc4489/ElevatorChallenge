@@ -21,7 +21,7 @@ export default class Floor {
         <div class="blackline"></div>
         <div class="floor">
             <div class="floor-content">
-                <button class="${buttonClass}" floorNumberData="${this.floorNumber}" buildingIndexData="${this.buildingIndex}" >
+                <button class="${buttonClass}" style="border: none;" floorNumberData="${this.floorNumber}" buildingIndexData="${this.buildingIndex}" >
                     ${this.floorNumber}
                 </button>
                 <div class="time-to-wait">
@@ -38,7 +38,7 @@ export default class Floor {
             const buttonClass = this.isWaiting ? 'metal linear floor-button green' : 'metal linear floor-button';
             element.className = buttonClass;
             // Show wait time if floor is waiting
-            const timeDisplay = this.timeToWait > 0 ? `<span class="time-to-wait">${this.timeToWait}</span>` : '';
+            const timeDisplay = this.timeToWait > 0 ? `<span class="time-to-wait" >${this.timeToWait}</span>` : '';
             element.innerHTML = `${this.floorNumber} ${timeDisplay}`;
         }
     }

@@ -1,4 +1,4 @@
-import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong } from '../config.js';
+import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong } from '../Configuration/staticConfiguratio.js';
 export default class Elevator {
     building;
     elevatorNumber;

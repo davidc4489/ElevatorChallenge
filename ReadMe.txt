@@ -36,3 +36,15 @@ Third step : main algorithm : calculation of the minimum time and allocation of 
         - If the elevator is currently available, we call the elevator, 
             otherwise we place the floor and the elevator in a waiting list which will be checked each time an elevator becomes available, 
             and if it is the elevator with the minimum duration for this floor, it will then be sent to this floor
+
+
+                                                    Explanation of application configuration :
+
+The application uses 2 configuration files: 
+    - 1 for the static configuration, i.e. the configuration which will not change while the application is running, 
+        such as the height defined for each floor, the speed of the elevator , etc.
+    - 1 other for the dynamic configuration which changes during execution, in our case when the user chooses at the beginning 
+        the number of buildings, elevators and floors he wants.
+
+I separated the configuration into 2 files for more clarity between the different types of values ​​contained in the configuration.
+The singleton design pattern is used for the dynamic configuration file in order to avoid different configurations for the same application.

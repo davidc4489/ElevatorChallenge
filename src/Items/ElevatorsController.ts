@@ -1,7 +1,7 @@
 import Building from './Building';
 import Elevator from './Elevator';
 import Floor from './Floor';
-import { floorHeightConfig, secondsPerFloor} from '../config.js';
+import { floorHeightConfig, secondsPerFloor} from '../Configuration/staticConfiguratio.js';
 
 export default class ElevatorsController {
     private building!: Building;

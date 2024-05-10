@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>Elevators App</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 100px;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="jumbotron" id="welcomePage">
+            <h1 class="display-4">Welcome</h1>
+            <p class="lead">Configure your elevator system and start using it.</p>
+            <form id="configForm" class="mt-4">
+                <div class="form-group">
+                    <label for="numBuildings">Number of Buildings:</label>
+                    <input type="number" class="form-control" id="numBuildings" name="numBuildings" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="numFloors">Number of Floors:</label>
+                    <input type="number" class="form-control" id="numFloors" name="numFloors" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="numElevators">Number of Elevators:</label>
+                    <input type="number" class="form-control" id="numElevators" name="numElevators" required min="1">
+                </div>
+                <button type="submit" class="btn btn-primary mr-2" id="customConfigButton">Start with Custom Configuration</button>
+                <button type="button" class="btn btn-secondary" id="defaultConfigButton">Start with Default Configuration</button>
+            </form>
+        </div>
+    </div>
     <div id="buildings" style="display: flex;"></div>
     <script type="module" src="dist/app.js"></script>
 </body>

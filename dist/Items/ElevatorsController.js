@@ -1,4 +1,4 @@
-import { floorHeightConfig, secondsPerFloor } from '../config.js';
+import { floorHeightConfig, secondsPerFloor } from '../Configuration/staticConfiguratio.js';
 export default class ElevatorsController {
     building;
     buildingFloors;
