@@ -1,4 +1,4 @@
-import { floorHeightConfig, secondsPerFloor } from '../Configuration/staticConfiguratio.js';
+import { floorHeightConfig } from '../Configuration/staticConfiguration.js';
 export default class ElevatorsController {
     building;
     buildingFloors;
@@ -26,12 +26,12 @@ export default class ElevatorsController {
                 let totalWaitingTime;
                 // Calculation in the case where the elevator is already moving towards another floor
                 if (elevator.movingTime > 0) {
-                    movingTime = elevator.movingTime + (Math.abs(floorNumber - elevator.floorDestinationNumber) * secondsPerFloor);
+                    movingTime = elevator.movingTime + (Math.abs(floorNumber - elevator.floorDestinationNumber) * elevator.velocity);
                     totalWaitingTime = movingTime + elevator.arrivalWaiting;
                 }
                 // Calculation in the case where the elevator is not moving towards another floor
                 else {
-                    movingTime = Math.abs(floorNumber - (elevatorPosition / floorHeightConfig)) * secondsPerFloor;
+                    movingTime = Math.abs(floorNumber - (elevatorPosition / floorHeightConfig)) * elevator.velocity;
                     totalWaitingTime = movingTime + elevator.arrivalWaiting;
                 }
                 // Keep the travel time if it is minimum and keeps the elevator index

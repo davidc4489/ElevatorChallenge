@@ -1,7 +1,7 @@
 import Building from './Building';
-import Elevator from './Elevator';
+import { Elevator } from './Elevator';
 import Floor from './Floor';
-import { floorHeightConfig, secondsPerFloor} from '../Configuration/staticConfiguratio.js';
+import { floorHeightConfig, secondsPerFloorFastElevator, secondsPerFloorSlowElevator} from '../Configuration/staticConfiguration.js';
 
 export default class ElevatorsController {
     private building!: Building;
@@ -38,12 +38,12 @@ export default class ElevatorsController {
 
                 // Calculation in the case where the elevator is already moving towards another floor
                 if (elevator.movingTime > 0) {
-                    movingTime = elevator.movingTime + (Math.abs(floorNumber - elevator.floorDestinationNumber!) * secondsPerFloor);
+                    movingTime = elevator.movingTime + (Math.abs(floorNumber - elevator.floorDestinationNumber!) * elevator.velocity);
                     totalWaitingTime = movingTime + elevator.arrivalWaiting;
                 }
                 // Calculation in the case where the elevator is not moving towards another floor
                 else {
-                    movingTime = Math.abs(floorNumber - (elevatorPosition / floorHeightConfig)) * secondsPerFloor;
+                    movingTime = Math.abs(floorNumber - (elevatorPosition / floorHeightConfig)) * elevator.velocity;
                     totalWaitingTime = movingTime + elevator.arrivalWaiting;
                 }
 

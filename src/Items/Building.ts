@@ -1,5 +1,5 @@
 import Floor from './Floor.js';
-import Elevator from './Elevator.js';
+import { Elevator } from './Elevator.js';
 import ElevatorsController from './ElevatorsController.js';
 
 export default class Building {

@@ -22,7 +22,7 @@ export class Configuration {
     }
     setDefaultConfiguration() {
         this.numBuildings = 2;
-        this.numFloors = 26;
-        this.numElevators = 4;
+        this.numFloors = 7;
+        this.numElevators = 3;
     }
 }

@@ -1,9 +1,10 @@
 import Building from "./Building";
-import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong} from '../Configuration/staticConfiguratio.js';
+import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong, secondsPerFloorFastElevator, secondsPerFloorSlowElevator} from '../Configuration/staticConfiguration.js';
 
-export default class Elevator {
+export class Elevator {
     private building!: Building;
     private elevatorNumber: number;
+    public velocity: number = secondsPerFloorSlowElevator;
     public isMoving: boolean = false;
     public arrivalWaiting: number = 0;
     public movingTime: number = 0;
@@ -46,8 +47,9 @@ export default class Elevator {
             const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`) as HTMLElement | null;
 
             if (elevator) {
+                const velocity = Math.round((this.velocity * 1000) / 1.5)
                 // Calculate the duration of the animation : the animation time for a floor multiplied by the number of floors
-                const duration = Math.abs(330 * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
+                const duration = Math.abs(velocity * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
 
                 //  Duration in milliseconds of the interval between each rendering of the elevator so that the animation is smooth
                 const interval = 10;
@@ -129,3 +131,21 @@ export default class Elevator {
         return 0;
     }
 }
+
+export class FastElevator extends Elevator {
+    constructor(elevatorNumber : number) {
+        super(elevatorNumber);
+        this.velocity = secondsPerFloorFastElevator; // Vitesse spécifique à cet ascenseur rapide
+        console.log("velocity", this.velocity);
+
+    }
+}
+
+export class SlowElevator extends Elevator {
+    constructor(elevatorNumber : number) {
+        super(elevatorNumber);
+        this.velocity = secondsPerFloorSlowElevator; // Vitesse spécifique à cet ascenseur rapide
+        console.log(this.velocity);
+    }
+}
+

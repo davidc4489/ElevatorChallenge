@@ -26,7 +26,7 @@ export class Configuration {
 
     public setDefaultConfiguration(): void {
         this.numBuildings = 2;
-        this.numFloors = 26;
-        this.numElevators = 4;
+        this.numFloors = 7;
+        this.numElevators = 3;
     }
 }

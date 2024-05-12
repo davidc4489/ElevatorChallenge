@@ -1,5 +1,5 @@
 import ElevatorsController from '../Items/ElevatorsController.js';
-import Elevator from '../Items/Elevator.js';
+import { Elevator } from '../Items/Elevator.js';
 import Floor from '../Items/Floor.js';
 
 export default class ElevatorsControllerFactory {

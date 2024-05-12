@@ -1,6 +1,13 @@
-import Elevator from '../Items/Elevator.js';
+import { FastElevator, SlowElevator } from '../Items/Elevator.js';
 export default class ElevatorFactory {
-    createElevator(elevatorNumber) {
-        return new Elevator(elevatorNumber);
+    createElevator(elevatorType, elevatorNumber) {
+        switch (elevatorType) {
+            case 'slow':
+                return new SlowElevator(elevatorNumber);
+            case 'fast':
+                return new FastElevator(elevatorNumber);
+            default:
+                throw new Error(`Invalid elevator type: ${elevatorType}`);
+        }
     }
 }

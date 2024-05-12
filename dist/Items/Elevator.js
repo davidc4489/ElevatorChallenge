@@ -1,7 +1,8 @@
-import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong } from '../Configuration/staticConfiguratio.js';
-export default class Elevator {
+import { floorHeightConfig, arrivalWaitingTimeInSeconds, arrivalSong, secondsPerFloorFastElevator, secondsPerFloorSlowElevator } from '../Configuration/staticConfiguration.js';
+export class Elevator {
     building;
     elevatorNumber;
+    velocity = secondsPerFloorSlowElevator;
     isMoving = false;
     arrivalWaiting = 0;
     movingTime = 0;
@@ -35,8 +36,9 @@ export default class Elevator {
             // Keep the elevator to move
             const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`);
             if (elevator) {
+                const velocity = Math.round((this.velocity * 1000) / 1.5);
                 // Calculate the duration of the animation : the animation time for a floor multiplied by the number of floors
-                const duration = Math.abs(330 * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
+                const duration = Math.abs(velocity * (floorNumber - Math.round(currentPosition / floorHeightConfig)));
                 //  Duration in milliseconds of the interval between each rendering of the elevator so that the animation is smooth
                 const interval = 10;
                 const steps = Math.ceil(duration / interval);
@@ -108,5 +110,19 @@ export default class Elevator {
             return currentPositionByFloor;
         }
         return 0;
+    }
+}
+export class FastElevator extends Elevator {
+    constructor(elevatorNumber) {
+        super(elevatorNumber);
+        this.velocity = secondsPerFloorFastElevator; // Vitesse spécifique à cet ascenseur rapide
+        console.log("velocity", this.velocity);
+    }
+}
+export class SlowElevator extends Elevator {
+    constructor(elevatorNumber) {
+        super(elevatorNumber);
+        this.velocity = secondsPerFloorSlowElevator; // Vitesse spécifique à cet ascenseur rapide
+        console.log(this.velocity);
     }
 }

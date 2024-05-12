@@ -20,8 +20,10 @@ if (customConfigForm && defaultConfigButton) {
     });
 }
 function renderElevatorApp() {
+    const elevatorTypeElement = document.getElementById('elevatorType');
+    const elevatorType = elevatorTypeElement.value;
     const elevatorAppFactory = new ElevatorAppFactory();
-    const elevatorApp = elevatorAppFactory.createElevatorApp(config.numBuildings, config.numFloors, config.numElevators);
+    const elevatorApp = elevatorAppFactory.createElevatorApp(config.numBuildings, config.numFloors, config.numElevators, elevatorType);
     const welcomePage = document.getElementById('welcomePage');
     const buildingsContainer = document.getElementById('buildings');
     if (welcomePage && buildingsContainer) {

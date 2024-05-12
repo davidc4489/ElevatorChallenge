@@ -33,6 +33,13 @@
                     <label for="numElevators">Number of Elevators:</label>
                     <input type="number" class="form-control" id="numElevators" name="numElevators" required min="1">
                 </div>
+                <div class="form-group">
+                    <label for="elevatorType">Select Elevator Type:</label>
+                    <select class="form-control" id="elevatorType">
+                        <option value="fast">Fast</option>
+                        <option value="slow">Slow</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary mr-2" id="customConfigButton">Start with Custom Configuration</button>
                 <button type="button" class="btn btn-secondary" id="defaultConfigButton">Start with Default Configuration</button>
             </form>

@@ -14,7 +14,7 @@ export default class BuildingFactory  {
         this.elevatorsControllerFactory = new ElevatorsControllerFactory();
     }
 
-    public createBuilding(numFloors: number, numElevators: number, buildingIndex: number): Building {
+    public createBuilding(numFloors: number, numElevators: number, buildingIndex: number, elevatorType: string): Building {
         const building = new Building(buildingIndex);
         building.buildingNumber = buildingIndex;
 
@@ -26,7 +26,8 @@ export default class BuildingFactory  {
 
         // Allocation to the building of its elevators
         for (let i = 0; i < numElevators; i++) {
-            const elevator = this.elevatorFactory.createElevator(i);
+            const elevator = this.elevatorFactory.createElevator(elevatorType, i);
+            console.log("velo", elevator.velocity)
             building.addElevator(elevator);
         }
 
