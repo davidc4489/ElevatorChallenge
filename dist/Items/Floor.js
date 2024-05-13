@@ -11,6 +11,12 @@ export default class Floor {
         this.timer = null;
         this.buildingIndex = buildingIndex;
     }
+    getIsWaiting() {
+        return this.isWaiting;
+    }
+    setIsWaiting(isWaiting) {
+        this.isWaiting = isWaiting;
+    }
     render() {
         // Display the button in green if the floor is waiting 
         const buttonClass = this.isWaiting ? 'metal linear floor-button green' : 'metal linear floor-button';

@@ -3,10 +3,11 @@ export class Elevator {
     building;
     elevatorNumber;
     velocity = secondsPerFloorSlowElevator;
-    isMoving = false;
     arrivalWaiting = 0;
     movingTime = 0;
+    totalTime = 0;
     floorDestinationNumber = null;
+    lastFloorDestination = 0;
     isAvailable = true;
     constructor(elevatorNumber) {
         this.elevatorNumber = elevatorNumber;
@@ -14,18 +15,31 @@ export class Elevator {
     setBuilding(building) {
         this.building = building;
     }
+    getVelocity() {
+        return this.velocity;
+    }
+    getTotalTime() {
+        return this.totalTime;
+    }
+    setTotalTime(newTotalTime) {
+        this.totalTime = newTotalTime;
+    }
+    getLastFloorDestination() {
+        return this.lastFloorDestination;
+    }
+    getIsAvailable() {
+        return this.isAvailable;
+    }
+    setLastFloorDestination(newLastFloorDestination) {
+        this.lastFloorDestination = newLastFloorDestination;
+    }
     render() {
         // The elevator contains information about its building
-        return `<img id="elevator${this.elevatorNumber}" src="../assets/elv.png" class="elevator" style="left: ${this.elevatorNumber * 90}px;" buildingNumberData="${this.building.buildingNumber}">`;
+        return `<img id="elevator${this.elevatorNumber}" src="../assets/elv.png" class="elevator" style="left: ${this.elevatorNumber * 90}px;" buildingNumberData="${this.building.getBuildingNumber()}">`;
     }
     async goToFloor(buildingNumber, floorNumber, movingTime) {
-        // Check if the elevator is moving
-        while (this.isMoving) {
-            await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500 ms before checking again
-        }
         const moveElevator = () => {
             // Update the elevator data
-            this.isMoving = true;
             this.arrivalWaiting = arrivalWaitingTimeInSeconds;
             this.movingTime = movingTime;
             this.floorDestinationNumber = floorNumber;
@@ -34,7 +48,7 @@ export class Elevator {
             const currentPosition = this.getCurrentPosition();
             const newPosition = Math.round(floorNumber * floorHeight);
             // Keep the elevator to move
-            const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`);
+            const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.getBuildingNumber()}"]`);
             if (elevator) {
                 const velocity = Math.round((this.velocity * 1000) / 1.5);
                 // Calculate the duration of the animation : the animation time for a floor multiplied by the number of floors
@@ -56,8 +70,8 @@ export class Elevator {
                         if (Math.abs(nextPosition - previousPosition) >= floorHeightConfig) {
                             // Decrements this.movingTime by 0.5 for each 110 pixels moved
                             this.movingTime -= 0.5;
+                            this.totalTime -= 0.5;
                             previousPosition = nextPosition; // Update the previous position
-                            // console.log("MovingTime : " + this.movingTime)
                         }
                         // Activate the animation after the defined time interval between each animation
                         setTimeout(animate, interval);
@@ -67,18 +81,30 @@ export class Elevator {
                         audio.play();
                         // Update the elevator state
                         this.building.getElevatorsController().elevatorArrival(floorNumber);
-                        const intervalId = setInterval(() => {
+                        const arrivalTime = Date.now();
+                        let lastUpdateTime = arrivalTime;
+                        const updateWaitingTime = () => {
+                            const currentTime = Date.now();
+                            const elapsedTime = currentTime - lastUpdateTime;
+                            lastUpdateTime = currentTime;
                             if (this.arrivalWaiting > 0) {
-                                this.arrivalWaiting -= 0.5;
-                                // console.log("ArrivalWaiting : ", this.arrivalWaiting);
+                                // Update wait time based on time since last update
+                                this.arrivalWaiting -= elapsedTime / 1000; // Convert milliseconds to seconds
+                                this.totalTime -= elapsedTime / 1000; // Update the total time
+                                this.arrivalWaiting = Math.round(this.arrivalWaiting * 2) / 2;
+                                this.totalTime = Math.round(this.totalTime * 2) / 2;
+                                if (this.arrivalWaiting < 0) {
+                                    this.arrivalWaiting = 0; // Ensures that wait time does not become negative
+                                }
                             }
-                            else {
-                                // console.log("ArrivalWaiting : ", this.arrivalWaiting);
-                                clearInterval(intervalId); // Stop updating when arrivalWaitingTimeInSeconds have passed
+                            if (this.arrivalWaiting > 0) {
+                                // Continue to update the wait time until it runs out
+                                setTimeout(updateWaitingTime, 500);
                             }
-                        }, 500);
+                        };
+                        updateWaitingTime();
                         // Update the elevator data
-                        this.isMoving = false;
+                        this.totalTime -= 0.5;
                         this.movingTime = 0;
                         this.floorDestinationNumber = null;
                         this.isAvailable = true;
@@ -101,7 +127,7 @@ export class Elevator {
     }
     getCurrentPosition() {
         // Keep the elevator to move
-        const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.buildingNumber}"]`);
+        const elevator = document.querySelector(`#elevator${this.elevatorNumber}[buildingNumberData="${this.building.getBuildingNumber()}"]`);
         if (elevator) {
             const currentPositionString = window.getComputedStyle(elevator).getPropertyValue('bottom');
             const currentPositionInt = parseInt(currentPositionString, 10);
@@ -115,14 +141,12 @@ export class Elevator {
 export class FastElevator extends Elevator {
     constructor(elevatorNumber) {
         super(elevatorNumber);
-        this.velocity = secondsPerFloorFastElevator; // Vitesse spécifique à cet ascenseur rapide
-        console.log("velocity", this.velocity);
+        this.velocity = secondsPerFloorFastElevator;
     }
 }
 export class SlowElevator extends Elevator {
     constructor(elevatorNumber) {
         super(elevatorNumber);
-        this.velocity = secondsPerFloorSlowElevator; // Vitesse spécifique à cet ascenseur rapide
-        console.log(this.velocity);
+        this.velocity = secondsPerFloorSlowElevator;
     }
 }

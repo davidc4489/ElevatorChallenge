@@ -30,6 +30,12 @@ export default class Building {
     getElevatorsController() {
         return this.elevatorsController;
     }
+    getBuildingNumber() {
+        return this.buildingNumber;
+    }
+    setBuildingNumber(buildingNumber) {
+        this.buildingNumber = buildingNumber;
+    }
     // Function to display the building
     renderBuilding(numFloors) {
         const marginRight = (numFloors * 75);

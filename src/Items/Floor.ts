@@ -2,8 +2,8 @@ import Building from "./Building";
 
 export default class Floor {
     private floorNumber: number;
-    public isWaiting: boolean;
-    public timeToWait: number;
+    private isWaiting: boolean;
+    private timeToWait: number;
     private timer: number | null;
     private buildingIndex: number;
 
@@ -13,6 +13,14 @@ export default class Floor {
         this.timeToWait = 0;
         this.timer = null;
         this.buildingIndex = buildingIndex;
+    }
+
+    public getIsWaiting(): boolean {
+        return this.isWaiting;
+    }
+
+    public setIsWaiting(isWaiting: boolean): void {
+        this.isWaiting = isWaiting;
     }
 
     public render(): string {

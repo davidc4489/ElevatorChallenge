@@ -9,6 +9,8 @@ export class Configuration {
         this.numElevators = 0;
         this.setDefaultConfiguration();
     }
+    // This method adheres to the Singleton design pattern principles by ensuring
+    // that only one instance of Configuration exists throughout the application.
     static getInstance() {
         if (!Configuration.instance) {
             Configuration.instance = new Configuration();

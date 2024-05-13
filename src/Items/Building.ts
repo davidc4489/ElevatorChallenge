@@ -6,7 +6,7 @@ export default class Building {
     private floors: Floor[];
     private elevators: Elevator[];
     private elevatorsController!: ElevatorsController ;
-    public buildingNumber: number
+    private buildingNumber: number
 
     constructor(buildingIndex: number) {
         this.floors = [];
@@ -40,6 +40,14 @@ export default class Building {
 
     public getElevatorsController(): ElevatorsController {
         return this.elevatorsController;
+    }
+
+    public getBuildingNumber(): number {
+        return this.buildingNumber;
+    }
+
+    public setBuildingNumber(buildingNumber: number): void {
+        this.buildingNumber = buildingNumber;
     }
 
     // Function to display the building

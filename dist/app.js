@@ -28,8 +28,10 @@ function renderElevatorApp() {
     const buildingsContainer = document.getElementById('buildings');
     if (welcomePage && buildingsContainer) {
         welcomePage.style.display = 'none'; // Hidding the welcome page
-        for (let i = 0; i < elevatorApp.buildings.length; i++) {
-            const building = elevatorApp.buildings[i];
+        // The loop iterates through each building in the elevatorApp, 
+        //  creates an HTML element to graphically represent each building and associates events with it
+        for (let i = 0; i < elevatorApp.getBuildings().length; i++) {
+            const building = elevatorApp.getBuildings()[i];
             const buildingElement = document.createElement('div');
             buildingElement.classList.add('building');
             buildingElement.addEventListener('click', (event) => {
@@ -38,10 +40,8 @@ function renderElevatorApp() {
                     const floorNumberAttribute = target.getAttribute('floorNumberData');
                     // Get the floor number
                     const buildingIndexAttribute = parseInt(target.getAttribute('buildingIndexData'));
-                    console.log("floorNumberAttribute :", floorNumberAttribute);
                     // Check the index of the building calling the elevator
-                    if (floorNumberAttribute !== null && building.buildingNumber == buildingIndexAttribute) {
-                        console.log("buildingIndexData :", buildingIndexAttribute);
+                    if (floorNumberAttribute !== null && building.getBuildingNumber() == buildingIndexAttribute) {
                         const floorNumber = parseInt(floorNumberAttribute);
                         if (!isNaN(floorNumber)) {
                             elevatorApp.assignFloorToElevator(buildingIndexAttribute, floorNumber);
