@@ -1,5 +1,3 @@
-import Building from "./Building";
-
 export default class Floor {
     private floorNumber: number;
     private isWaiting: boolean;

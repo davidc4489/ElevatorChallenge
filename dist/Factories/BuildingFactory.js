@@ -2,6 +2,7 @@ import Building from '../Items/Building.js';
 import ElevatorFactory from './ElevatorFactory.js';
 import FloorFactory from './FloorFactory.js';
 import ElevatorsControllerFactory from './ElevatorsControllerFactory.js';
+import { floorWithPriority } from '../Decorators/FloorWithPriority.js';
 export default class BuildingFactory {
     floorFactory;
     elevatorFactory;
@@ -16,7 +17,10 @@ export default class BuildingFactory {
         building.setBuildingNumber(buildingIndex);
         // Allocation to the building of its floors
         for (let i = numFloors - 1; i >= 0; i--) {
-            const floor = this.floorFactory.createFloor("standard", i, buildingIndex);
+            // Gives the top floor priority status
+            const floor = (i === numFloors - 1) ?
+                floorWithPriority(this.floorFactory.createFloor("standard", i, buildingIndex), true) :
+                this.floorFactory.createFloor("standard", i, buildingIndex);
             building.addFloor(floor);
         }
         // Allocation to the building of its elevators

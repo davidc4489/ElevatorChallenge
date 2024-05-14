@@ -57,7 +57,6 @@ export default class ElevatorsController {
             if (minimalWaitingTime !== Infinity) {
                 // Assign the waiting time to the calling floor
                 this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setTime(minimalWaitingTime);
-
                 this.buildingElevators[closestElevatorIndex].setLastFloorDestination(floorNumber);
                 const previewTotalTime = this.buildingElevators[closestElevatorIndex].getTotalTime();
                 this.buildingElevators[closestElevatorIndex].setTotalTime(previewTotalTime + currentDeplacementTime + arrivalWaitingTimeInSeconds);

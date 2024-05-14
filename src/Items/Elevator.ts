@@ -185,3 +185,4 @@ export class SlowElevator extends Elevator {
         this.velocity = secondsPerFloorSlowElevator;
     }
 }
+ 
