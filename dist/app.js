@@ -2,6 +2,7 @@ import ElevatorAppFactory from './Factories/ElevatorAppFactory.js';
 import { Configuration } from './Configuration/dynamicConfiguration.js';
 const config = Configuration.getInstance();
 const customConfigForm = document.getElementById('configForm');
+;
 const defaultConfigButton = document.getElementById('defaultConfigButton');
 if (customConfigForm && defaultConfigButton) {
     // Receiving user configuration
@@ -10,6 +11,9 @@ if (customConfigForm && defaultConfigButton) {
         const numBuildings = document.getElementById('numBuildings').value;
         const numFloors = document.getElementById('numFloors').value;
         const numElevators = document.getElementById('numElevators').value;
+        if (numBuildings === null || numFloors === null || numElevators === null) {
+            throw new Error(`Invalid input`);
+        }
         config.setConfiguration(parseInt(numBuildings), parseInt(numFloors), parseInt(numElevators));
         renderElevatorApp();
     });
@@ -23,11 +27,12 @@ function renderElevatorApp() {
     const elevatorTypeElement = document.getElementById('elevatorType');
     const elevatorType = elevatorTypeElement.value;
     const elevatorAppFactory = new ElevatorAppFactory();
-    const elevatorApp = elevatorAppFactory.createElevatorApp(config.numBuildings, config.numFloors, config.numElevators, elevatorType);
+    const elevatorApp = elevatorAppFactory.createElevatorApp(config.getNumBuildings(), config.getNumFloors(), config.getNumElevators(), elevatorType);
     const welcomePage = document.getElementById('welcomePage');
     const buildingsContainer = document.getElementById('buildings');
     if (welcomePage && buildingsContainer) {
         welcomePage.style.display = 'none'; // Hidding the welcome page
+        buildingsContainer.innerHTML = ''; // Delete old building elements before recreating them
         // The loop iterates through each building in the elevatorApp, 
         //  creates an HTML element to graphically represent each building and associates events with it
         for (let i = 0; i < elevatorApp.getBuildings().length; i++) {
@@ -49,7 +54,7 @@ function renderElevatorApp() {
                     }
                 }
             });
-            buildingElement.innerHTML = building.renderBuilding(config.numFloors);
+            buildingElement.innerHTML = building.renderBuilding(config.getNumFloors());
             buildingsContainer.appendChild(buildingElement);
         }
     }

@@ -1,8 +1,8 @@
 export class Configuration {
-    private static instance: Configuration;
-    public numBuildings: number;
-    public numFloors: number;
-    public numElevators: number;
+    private static instance: Configuration; // The instance variable is declared static, meaning it is associated with the Configuration class itself rather than a specific instance of that class.
+    private numBuildings: number;
+    private numFloors: number;
+    private numElevators: number;
 
     private constructor() {
         this.numBuildings = 0;
@@ -30,5 +30,17 @@ export class Configuration {
         this.numBuildings = 2;
         this.numFloors = 7;
         this.numElevators = 3;
+    }
+
+    public getNumBuildings(): number {
+        return this.numBuildings;
+    }
+
+    public getNumFloors(): number {
+        return this.numFloors;
+    }
+
+    public getNumElevators(): number {
+        return this.numElevators;
     }
 }
