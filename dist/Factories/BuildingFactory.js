@@ -16,7 +16,7 @@ export default class BuildingFactory {
         building.setBuildingNumber(buildingIndex);
         // Allocation to the building of its floors
         for (let i = numFloors - 1; i >= 0; i--) {
-            const floor = this.floorFactory.createFloor(i, buildingIndex);
+            const floor = this.floorFactory.createFloor("standard", i, buildingIndex);
             building.addFloor(floor);
         }
         // Allocation to the building of its elevators
