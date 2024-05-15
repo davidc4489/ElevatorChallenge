@@ -67,5 +67,4 @@ export default class Building {
         buildingHTML += '</div>';
         return buildingHTML;
     }
-
 }

@@ -50,11 +50,13 @@ export default class ElevatorsController {
     public assignFloorToElevator(floorNumber: number): void {
         if (this.buildingElevators.length > 0) {
             
-            this.updateFloorButton(floorNumber);
 
             const [closestElevatorIndex, minimalWaitingTime, currentDeplacementTime] = this.minimalWaitingTime(floorNumber);
         
-            if (minimalWaitingTime !== Infinity) {
+            // Checks if an elevator has been found and if it is not already on the floor calling for it
+            if (minimalWaitingTime !== Infinity && 
+                    !(this.buildingElevators[closestElevatorIndex].getIsAvailable() && this.buildingElevators[closestElevatorIndex].getLastFloorDestination() === floorNumber)) {
+                this.updateFloorButton(floorNumber);                
                 // Assign the waiting time to the calling floor
                 this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setTime(minimalWaitingTime);
                 this.buildingElevators[closestElevatorIndex].setLastFloorDestination(floorNumber);
@@ -105,5 +107,9 @@ export default class ElevatorsController {
     public elevatorArrival(floorNumber: number): void {
         this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].setIsWaiting(false);
         this.buildingFloors[this.buildingFloors.length - 1 - floorNumber].updateRender();
+    }
+
+    public getWaitingFloorsCount(): number {
+        return this.waitingFloorsList.length;
     }
 }
